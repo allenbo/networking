@@ -99,6 +99,13 @@ size_t Buffer::writeString(std::string s) {
   return s.size() + sizeof(s.size());
 }
 
+size_t Buffer::writeString(const char* s, int len) {
+  writeInt(len);
+  Byte * bytes = (Byte*)s;
+  write(bytes, len);
+  return len + sizeof(len);
+}
+
 int Buffer::readByte(Byte* b) {
   if (curr_pos_ >= size_) {
     return -1;
@@ -112,6 +119,15 @@ int Buffer::read(Byte bytes[], size_t size) {
     return -1;
   }
   memcpy(bytes, bytes_ + curr_pos_, size);
+  curr_pos_ += size;
+  return 0;
+}
+
+int Buffer::read(char* s, size_t size) {
+  if(curr_pos_ + size > size_) {
+    return -1;
+  }
+  memcpy(s, bytes_ + curr_pos_, size);
   curr_pos_ += size;
   return 0;
 }
@@ -175,6 +191,14 @@ int Buffer::readString(std::string* s) {
   s->assign((const char*)bytes, size);
   delete [] bytes;
   return 0;
+}
+
+void Buffer::append(Buffer& buf) {
+  if (buf.size_ == 0) {
+    return;
+  }
+
+  write(buf.bytes_, buf.size_);
 }
 
 } // networking

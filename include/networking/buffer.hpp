@@ -26,6 +26,7 @@ class Buffer {
     size_t writeLongInt(int64_t ln);
     size_t writeULongInt(uint64_t uln);
     size_t writeString(std::string s);
+    size_t writeString(const char* s, int len);
     size_t writeByte(Byte b);
     size_t write(Byte bytes[], size_t size);
 
@@ -37,6 +38,9 @@ class Buffer {
     int readString(std::string * s);
     int readByte(Byte* b);
     int read(Byte bytes[], size_t size);
+    int read(char* s, size_t size);
+
+    void append(Buffer& buf);
 
   private:
     Byte   *bytes_;

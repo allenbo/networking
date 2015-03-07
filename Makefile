@@ -13,6 +13,8 @@ CFLAG := -g -Wall -std=c++11
 LFLAG := -g -lpthread
 ARFLAG := -rcs
 
+THIRDPARTY_INCLUDE := -I../common/include/
+
 SRC := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ := $(patsubst %.cpp,%.o, $(subst $(SRC_DIR),$(BUILD_DIR), $(SRC)))
 TEST_SRC := $(wildcard $(TEST_SRC_DIR)/*.cpp)
@@ -29,7 +31,7 @@ $(BUILD_DIR):
 	mkdir -p $@
 
 $(BUILD_DIR)/%.o:$(SRC_DIR)/%.cpp
-	$(CPP) -c $< $(CFLAG) -o $@ -I$(INCLUDE_DIR)
+	$(CPP) -c $< $(CFLAG) -o $@ -I$(INCLUDE_DIR) $(THIRDPARTY_INCLUDE)
 
 $(ARCHIVE):$(OBJ)
 	$(AR) $(ARFLAG) $@ $(OBJ)
@@ -38,7 +40,7 @@ $(TESTBIN_DIR):
 	mkdir -p $@
 
 $(TESTBIN_DIR)/%:$(TEST_SRC_DIR)/%.cpp $(OBJ)
-	$(CPP) $^ $(CFLAG) $(LFLAG) -o $@ -I$(INCLUDE_DIR) -L$(BUILD_DIR)
+	$(CPP) $^ $(CFLAG) $(LFLAG) -o $@ -I$(INCLUDE_DIR) -L$(BUILD_DIR) $(THIRDPARTY_INCLUDE)
 
 clean:
 	rm -rf $(BUILD_DIR) $(TESTBIN_DIR) $(ARCHIVE)
