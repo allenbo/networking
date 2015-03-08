@@ -80,6 +80,19 @@ size_t Buffer::writeInt(int n) {
   return writeUInt((unsigned int) n);
 }
 
+size_t Buffer::writeUShort(unsigned short un) {
+  size_t size = sizeof(un);
+  for(size_t i = 0; i < size; i ++ ) {
+    Byte b = (Byte)((un >> ((size - 1 - i) * 8)) & 0xff);
+    writeByte(b);
+  }
+  return size;
+}
+
+size_t Buffer::writeShort(short n) {
+  return writeUShort((unsigned short)n);
+}
+
 size_t Buffer::writeULongInt(uint64_t uln) {
   size_t size = sizeof(uln);
   for(size_t i = 0; i < size; i ++ ) {
@@ -151,6 +164,27 @@ int Buffer::readUInt(unsigned int* un) {
 
 int Buffer::readInt(int* n) {
   return readUInt((unsigned int*)n);
+}
+
+int Buffer::readUShort(unsigned short* un) {
+  *un = 0;
+  int st;
+  size_t size = sizeof(unsigned int);
+
+  for(size_t i = 0; i < size; i ++) {
+    Byte b;
+    st = readByte(&b);
+    if (st != 0) {
+      return st;
+    }
+
+    *un |= (unsigned short)(b) << ((size - 1 - i) * 8);
+  }
+  return 0;
+}
+
+int Buffer::readShort(short* n) {
+  return readUShort((unsigned short*)n);
 }
 
 int Buffer::readULongInt(uint64_t* uln) {

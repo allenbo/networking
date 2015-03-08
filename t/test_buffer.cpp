@@ -13,7 +13,7 @@ using networking::Buffer;
 int main() {
   Buffer buffer;
 
-  int n = rand();
+  int n = rand() * -1;
   unsigned int un = rand();
   int64_t ln = rand();
   uint64_t uln = rand();

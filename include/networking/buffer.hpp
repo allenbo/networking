@@ -21,6 +21,8 @@ class Buffer {
     const size_t size() const { return size_; }
     const unsigned char*  data() const { return bytes_; }
 
+    size_t writeShort(short n);
+    size_t writeUShort(unsigned short un);
     size_t writeInt(int n);
     size_t writeUInt(unsigned int un);
     size_t writeLongInt(int64_t ln);
@@ -31,6 +33,8 @@ class Buffer {
     size_t write(Byte bytes[], size_t size);
 
     /* @return 0 means success, -1 means failed */
+    int readShort(short* n);
+    int readUShort(unsigned short* un);
     int readInt(int* n);
     int readUInt(unsigned int* un);
     int readLongInt(int64_t* ln);
