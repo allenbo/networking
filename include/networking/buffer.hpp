@@ -14,6 +14,7 @@ class Buffer {
 
     Buffer();
     Buffer(const Buffer& buffer);
+    Buffer& operator=(const Buffer& o);
     Buffer(Byte *bytes, size_t);
     ~Buffer();
 

@@ -1,6 +1,5 @@
 #include "networking/buffer.hpp"
 
-#include <stdlib.h>
 #include <string.h>
 
 namespace networking {
@@ -10,17 +9,35 @@ Buffer::Buffer()
      cap_(MIN_BUFFER),
      size_(0),
      curr_pos_(0) {
-  //bytes_ = new Byte[cap_];
-  bytes_ = (Byte*) malloc(cap_);
+  bytes_ = new Byte[cap_];
 }
 
-Buffer::Buffer(const Buffer& o) {
-  //bytes_ = new Byte[o.size_];
-  bytes_ = (Byte*) malloc(o.size_);
+Buffer::Buffer(const Buffer& o)
+    :bytes_(nullptr),
+     cap_(MIN_BUFFER),
+     size_(0),
+     curr_pos_(0) {
+  bytes_ = new Byte[o.size_];
   memcpy(bytes_, o.bytes_, o.size_);
   curr_pos_ = o.curr_pos_;
   cap_ = o.size_;
   size_ = o.size_;
+}
+
+Buffer& Buffer::operator=(const Buffer& o) {
+  if (this == &o) {
+    return *this;
+  }
+
+  if (bytes_) {
+    delete []bytes_;
+  }
+  bytes_ = new Byte[o.size_];
+  memcpy(bytes_, o.bytes_, o.size_);
+  curr_pos_ = o.curr_pos_;
+  cap_ = o.size_;
+  size_ = o.size_;
+  return *this;
 }
 
 Buffer::Buffer(Byte *bytes, size_t size)
@@ -32,8 +49,10 @@ Buffer::Buffer(Byte *bytes, size_t size)
 }
 
 Buffer::~Buffer() {
-  //delete [] bytes_;
-  free(bytes_);
+  if (bytes_) {
+    delete [] bytes_;
+    bytes_ = nullptr;
+  }
 }
 
 size_t Buffer::writeByte(Byte b) {
