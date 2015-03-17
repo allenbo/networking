@@ -9,8 +9,8 @@ CPP := g++
 CC := gcc
 AR := ar
 
-CFLAG := -O2 -Wall -std=c++11 -DNDEBUG
-LFLAG := -O2 -lpthread -DNDEBUG
+CFLAG := -g -Wall -std=c++11 -DNDEBUG
+LFLAG := -g -lpthread -DNDEBUG
 ARFLAG := -rcs
 
 THIRDPARTY_INCLUDE := -I../common/include/

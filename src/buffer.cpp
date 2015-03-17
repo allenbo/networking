@@ -188,7 +188,7 @@ int Buffer::readInt(int* n) {
 int Buffer::readUShort(unsigned short* un) {
   *un = 0;
   int st;
-  size_t size = sizeof(unsigned int);
+  size_t size = sizeof(unsigned short);
 
   for(size_t i = 0; i < size; i ++) {
     Byte b;
