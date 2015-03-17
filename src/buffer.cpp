@@ -254,4 +254,8 @@ void Buffer::append(Buffer& buf) {
   write(buf.bytes_, buf.size_);
 }
 
+int Buffer::peek() {
+  return cap_ - curr_pos_;
+}
+
 } // networking

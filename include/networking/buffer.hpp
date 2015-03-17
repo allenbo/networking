@@ -46,6 +46,7 @@ class Buffer {
     int read(char* s, size_t size);
 
     void append(Buffer& buf);
+    int peek();
 
   private:
     Byte   *bytes_;
