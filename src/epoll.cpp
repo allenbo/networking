@@ -10,7 +10,7 @@ EPoll::EPoll()
 
 void EPoll::watch(int fd, Pollable::MODE mod) {
   ScopeLock _(&mutex_);
-  LOG(DEBUG) << "watch " << fd << std::endl;
+  LOG(DEBUG) << "watch " << fd << (mod == Pollable::MODE::READ? " on read" : " on write") << std::endl;
 
   struct epoll_event event;
   event.data.fd = fd;
@@ -39,7 +39,7 @@ void EPoll::watch(int fd, Pollable::MODE mod) {
 
 void EPoll::unwatch(int fd, Pollable::MODE mod) {
   ScopeLock _(&mutex_);
-  LOG(DEBUG) << "unwatch " << fd << std::endl;
+  LOG(DEBUG) << "unwatch " << fd << (mod == Pollable::MODE::READ? " on read" : " on write") << std::endl;
 
   if (flags_.count(fd) != 0) {
     Flag old = flags_[fd];
@@ -69,11 +69,10 @@ void EPoll::unwatch(int fd, Pollable::MODE mod) {
 bool EPoll::poll(std::vector<int>& reads, std::vector<int>& writes) {
   while (true) {
     int rn = 0;
-    {
-      ScopeLock _(&mutex_);
-      // timeout 1 ms
-      rn = epoll_wait(efd_, eventv_, MAX_EVENT_SIZE, 1);
-    }
+    // Remove lock protection here
+    // TODO: need to figure out is this safe or not
+    // timeout 1 ms
+    rn = epoll_wait(efd_, eventv_, MAX_EVENT_SIZE, 1);
 
     if (rn == -1) return false;
     if (rn == 0) continue;

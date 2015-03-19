@@ -1,5 +1,5 @@
 #include "networking/monitor.hpp"
-#include "networking/selectpoll.hpp"
+#include "networking/epoll.hpp"
 #include "common/all.hpp"
 #include <vector>
 
@@ -16,7 +16,8 @@ void init_monitor() {
 
 Monitor::Monitor() 
     :poll_manager_(nullptr) {
-  poll_manager_ = new SelectPoll();
+  poll_manager_ = new EPoll();
+  //poll_manager_ = new SelectPoll();
   start();
 }
 

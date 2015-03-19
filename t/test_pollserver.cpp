@@ -36,7 +36,6 @@ class Server : public Asio {
     }
 
     void on_channel_close(Channel* ch) {
-      on_send_complete(ch);
     }
 
     void loop() {

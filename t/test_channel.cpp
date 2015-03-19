@@ -58,7 +58,7 @@ int main() {
   //server.start();
   //
 
-  std::string bigmsg = rand_string(10*1000*1000);
+  std::string bigmsg = rand_string(10 * 1000 * 1000);
 
   Channel ch("127.0.0.1:8888", false);
   Buffer buffer;
